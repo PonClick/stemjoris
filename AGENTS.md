@@ -5,7 +5,7 @@ agent:
   status: actief
   kant: prive
   purpose: "StemJoris – Guitar Tuner: open-source stemapparaat-PWA voor gitaar en andere snaarinstrumenten, cadeau voor Joris en zijn muzikantenvrienden"
-  working_on: "Rebrand van TurkeyTuna naar StemJoris (verkiezingsthema, NL/EN), open source op GitHub, hosting via GitHub Pages"
+  working_on: "Live op GitHub Pages sinds 23-10-2026 (bd9b246); wacht op een test met een echte microfoon en een sceptische foto van Joris"
   parent: null
   contact:
     orchestrator: CLAUDE.md

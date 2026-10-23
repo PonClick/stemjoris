@@ -8,11 +8,13 @@ Hoofdsessie (Claude, Opus 5.5) orkestreert en integreert. Gestart 23-10-2026.
 
 | Agent | Model | Bezit | Status |
 |---|---|---|---|
-| D · rebrand + NL/EN | opus | `src/ui/**`, `src/style.css`, `public/**`, `src/i18n/**`, `index.html`, `src/main.ts`, `tests/i18n.test.ts` | loopt. ~~verkiezingsthema (rood potlood, stembiljetvakje)~~ koerswijziging 23-10-2026: hardwarepaneel met LED-boog, westernletter, Joris in de naald (mockup Max); `public/fonts/**` erbij. Verder: portretplek voor Joris (`public/joris.jpg`), NL/EN met Engelse instrumentnamen, Joris' contrabas-sneltoets |
+| D · rebrand + NL/EN | opus | `src/ui/**`, `src/style.css`, `public/**`, `src/i18n/**`, `index.html`, `src/main.ts`, `tests/i18n.test.ts` | klaar 23-10-2026: 75 tests groen, build 84 kB JS (27 kB gzip), screenshots NL/EN met en zonder foto's gereviewd. ~~verkiezingsthema (rood potlood, stembiljetvakje)~~ koerswijziging 23-10-2026: hardwarepaneel met LED-boog, westernletter, Joris in de naald (mockup Max); `public/fonts/**` erbij. Verder: portretplek voor Joris (`public/joris.jpg`), NL/EN met Engelse instrumentnamen, Joris' contrabas-sneltoets |
 
 Hoofdsessie: repo en map hernoemd (`PonClick/stemjoris`), `LICENSE` (MIT, portret uitgezonderd), `README.md` (EN/NL), `.github/workflows/pages.yml`, `package.json`, `AGENTS.md` en het kaartje, manifest, vault en Infra.
 
-Wacht op Max: foto van Joris (vierkant, `public/joris.jpg`) en akkoord dat die publiek mag; eventueel het domein stemjoris.nl kopen.
+Gepubliceerd 23-10-2026: commit `bd9b246`, repo publiek, live op https://ponclick.github.io/stemjoris/ (GitHub Pages, workflow groen).
+
+Wacht op Max: een echte sceptische foto (vervangt de mockup-uitsnede `joris-off.jpg`); eventueel stemjoris.nl kopen; akkoord om de oude tailnet-versie op te ruimen; test met een echte microfoon.
 
 ## Fase 1: TurkeyTuna
 
