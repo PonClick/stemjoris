@@ -2,11 +2,11 @@
 // - install: app-shell cachen, plus de (gehashte) scripts en stylesheets waar index.html naar wijst;
 // - fetch (same-origin GET): network-first voor navigaties met cache-terugval,
 //   cache-first voor overige bestanden (Vite hasht ze, dus ze veranderen nooit onder dezelfde naam);
-// - portretten van Joris (joris*.jpg, optioneel): network-first, zodat een nieuwe foto meteen telt;
-// - activate: oude caches opruimen, ook die van de vorige naam (turkeytuna-…).
+// - de cartoontekeningen (cartoon/*.svg) zijn vaste app-assets en zitten in de precache;
+// - activate: oude caches opruimen (ook v1 met de oude foto's en de vorige naam turkeytuna-…).
 // Verhoog VERSION bij een wijziging in dit bestand of de shell-lijst.
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `stemjoris-${VERSION}`;
 const OLD_PREFIXES = ['stemjoris-', 'turkeytuna-'];
 const SHELL = [
@@ -20,6 +20,11 @@ const SHELL = [
   './icons/icon-maskable-512.png',
   './fonts/Rye-Regular.ttf',
   './fonts/Oswald-Variable.ttf',
+  './cartoon/joris-idle.svg',
+  './cartoon/joris-tuned.svg',
+  './cartoon/joris-off.svg',
+  './cartoon/joris-far.svg',
+  './cartoon/bass-bg.svg',
 ];
 
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
@@ -68,9 +73,9 @@ self.addEventListener('activate', (event) => {
 
 function cacheable(response) {
   if (!response || !response.ok || response.type !== 'basic') return false;
-  // Een server met SPA-terugval geeft voor een ontbrekende foto index.html met status 200: niet cachen.
+  // Een server met SPA-terugval geeft voor een ontbrekende afbeelding index.html met status 200: niet cachen.
   const path = new URL(response.url).pathname;
-  if (/\.(?:jpe?g|png|webp)$/.test(path) && !(response.headers.get('content-type') || '').startsWith('image/')) return false;
+  if (/\.(?:jpe?g|png|webp|svg)$/.test(path) && !(response.headers.get('content-type') || '').startsWith('image/')) return false;
   return true;
 }
 
@@ -105,7 +110,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (request.mode === 'navigate' || /\/joris[^/]*\.(?:jpe?g|png|webp)$/.test(url.pathname)) {
+  if (request.mode === 'navigate') {
     event.respondWith(networkFirst(request));
   } else {
     event.respondWith(cacheFirst(request));

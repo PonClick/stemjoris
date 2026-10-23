@@ -5,7 +5,7 @@ agent:
   status: actief
   kant: prive
   purpose: "StemJoris – Guitar Tuner: open-source stemapparaat-PWA voor gitaar en andere snaarinstrumenten, cadeau voor Joris en zijn muzikantenvrienden"
-  working_on: "Live op GitHub Pages sinds 23-10-2026 (bd9b246); wacht op een test met een echte microfoon en een sceptische foto van Joris"
+  working_on: "Live op GitHub Pages met cartoon-Joris (23-10-2026); wacht op een test met een echte microfoon"
   parent: null
   contact:
     orchestrator: CLAUDE.md
@@ -58,6 +58,6 @@ npm run build      # typecheck + productiebuild naar dist/
 - Stemmingsdata: wetenschappelijke notatie, alleen kruizen, snaren van laag naar hoog (fysieke volgorde).
 - Geen tracking, geen externe requests: de app werkt offline. Microfoonaudio verlaat het apparaat nooit.
 - De repo is publiek: geen interne hostnamen, tailnet-adressen, IP's of paden naar Max' vaults in code of docs. Interne zaken staan in de vaults.
-- De foto's van Joris (`public/joris*.jpg`) vallen niet onder de MIT-licentie; publiek akkoord van Max 23-10-2026.
+- **Nooit echte foto's van Joris** in deze repo (besluit Max 23-10-2026; `.gitignore` blokkeert `public/joris*.jpg/png/webp`). Joris is een getekende cartoon in `public/cartoon/` (MIT). De foto's die er even in stonden zijn op 23-10-2026 uit de hele git-geschiedenis gewist.
 - Geen nieuwe dependencies zonder reden; runtime-dependencies liever helemaal niet.
 - Commit alleen in opdracht van Max.

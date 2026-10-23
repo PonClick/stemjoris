@@ -14,7 +14,11 @@ Hoofdsessie: repo en map hernoemd (`PonClick/stemjoris`), `LICENSE` (MIT, portre
 
 Gepubliceerd 23-10-2026: commit `bd9b246`, repo publiek, live op https://ponclick.github.io/stemjoris/ (GitHub Pages, workflow groen).
 
-Wacht op Max: een echte sceptische foto (vervangt de mockup-uitsnede `joris-off.jpg`); eventueel stemjoris.nl kopen; akkoord om de oude tailnet-versie op te ruimen; test met een echte microfoon.
+| E · cartoon-Joris | opus | `public/cartoon/**`, `src/ui/brand.ts`, `src/ui/meter.ts` (koppeling), `src/style.css` (cartoon), `public/sw.js`, `tests/brand.test.ts` | klaar 23-10-2026: vier SVG-uitdrukkingen (bier, sceptisch, grimas met duivelshoorns, duim op) + contrabas-achtergrond, elk < 25 kB; 82 tests groen; goedgekeurd door Max |
+
+23-10-2026: op verzoek van Max zijn de echte foto's van Joris uit de hele git-geschiedenis gewist (`git filter-branch`, force-push `bea898f`), en de oude Actions-runs met artefacten zijn verwijderd. De live site geeft 404 op de foto's. Lokale backup van vóór het wissen: git-bundel in de sessie-scratchpad (privé).
+
+~~Wacht op Max: een echte sceptische foto (vervangt de mockup-uitsnede `joris-off.jpg`); eventueel stemjoris.nl kopen; akkoord om de oude tailnet-versie op te ruimen; test met een echte microfoon.
 
 ## Fase 1: TurkeyTuna
 

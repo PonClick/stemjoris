@@ -47,4 +47,4 @@ StemJoris is een gratis stemapparaat voor gitaar, bas, ukelele, viool en nog vee
 
 ## License
 
-MIT, see [LICENSE](LICENSE). The photos of Joris (`public/joris*.jpg`) are not covered by the license and may not be reused without permission. The bundled fonts are under the SIL Open Font License (see `public/fonts/`).
+MIT, see [LICENSE](LICENSE), including the cartoon artwork in `public/cartoon/`. The bundled fonts are under the SIL Open Font License (see `public/fonts/`).
