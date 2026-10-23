@@ -5,3 +5,9 @@ dist/
 .env
 .env.*
 
+
+# Echte foto's van Joris horen niet in deze openbare repo (besluit Max 23-10-2026): alleen de getekende cartoon
+public/joris*.jpg
+public/joris*.jpeg
+public/joris*.png
+public/joris*.webp
