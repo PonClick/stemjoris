@@ -1,7 +1,7 @@
 {
-  "name": "turkeytuna",
+  "name": "stemjoris",
   "version": "0.1.0",
-  "description": "TurkeyTuna: stemapparaat voor gitaar en andere snaarinstrumenten (PWA)",
+  "description": "StemJoris – Guitar Tuner: a free, open-source, offline tuner PWA for guitar, bass, ukulele, violin and many other string instruments",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -9,12 +9,17 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
     "vitest": "^5.0.5"
   },
   "private": true,
-  "type": "module"
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PonClick/stemjoris.git"
+  },
+  "homepage": "https://ponclick.github.io/stemjoris/"
 }

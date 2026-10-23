@@ -1,12 +1,14 @@
-// TurkeyTuna service worker: eenvoudige offline-cache, handgeschreven (geen plugin).
+// StemJoris service worker: eenvoudige offline-cache, handgeschreven (geen plugin).
 // - install: app-shell cachen, plus de (gehashte) scripts en stylesheets waar index.html naar wijst;
 // - fetch (same-origin GET): network-first voor navigaties met cache-terugval,
 //   cache-first voor overige bestanden (Vite hasht ze, dus ze veranderen nooit onder dezelfde naam);
-// - activate: oude caches opruimen.
+// - portretten van Joris (joris*.jpg, optioneel): network-first, zodat een nieuwe foto meteen telt;
+// - activate: oude caches opruimen, ook die van de vorige naam (turkeytuna-…).
 // Verhoog VERSION bij een wijziging in dit bestand of de shell-lijst.
 
 const VERSION = 'v1';
-const CACHE = `turkeytuna-${VERSION}`;
+const CACHE = `stemjoris-${VERSION}`;
+const OLD_PREFIXES = ['stemjoris-', 'turkeytuna-'];
 const SHELL = [
   './',
   './index.html',
@@ -16,6 +18,8 @@ const SHELL = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',
+  './fonts/Rye-Regular.ttf',
+  './fonts/Oswald-Variable.ttf',
 ];
 
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
@@ -29,7 +33,7 @@ async function assetsFromIndex(cache) {
     const urls = new Set();
     for (const m of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
       const url = new URL(m[1], scopeUrl('./index.html'));
-      if (url.origin === self.location.origin && /\.(?:js|css|svg|png|webp|woff2?)$/.test(url.pathname)) {
+      if (url.origin === self.location.origin && /\.(?:js|css|svg|png|webp|woff2?|ttf)$/.test(url.pathname)) {
         urls.add(url.href);
       }
     }
@@ -56,14 +60,18 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
-      await Promise.all(keys.filter((k) => k.startsWith('turkeytuna-') && k !== CACHE).map((k) => caches.delete(k)));
+      await Promise.all(keys.filter((k) => k !== CACHE && OLD_PREFIXES.some((p) => k.startsWith(p))).map((k) => caches.delete(k)));
       await self.clients.claim();
     })(),
   );
 });
 
 function cacheable(response) {
-  return response && response.ok && response.type === 'basic';
+  if (!response || !response.ok || response.type !== 'basic') return false;
+  // Een server met SPA-terugval geeft voor een ontbrekende foto index.html met status 200: niet cachen.
+  const path = new URL(response.url).pathname;
+  if (/\.(?:jpe?g|png|webp)$/.test(path) && !(response.headers.get('content-type') || '').startsWith('image/')) return false;
+  return true;
 }
 
 async function networkFirst(request) {
@@ -97,7 +105,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (request.mode === 'navigate') {
+  if (request.mode === 'navigate' || /\/joris[^/]*\.(?:jpe?g|png|webp)$/.test(url.pathname)) {
     event.respondWith(networkFirst(request));
   } else {
     event.respondWith(cacheFirst(request));

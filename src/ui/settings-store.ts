@@ -15,7 +15,33 @@ export interface StoredSettings {
   toneEnabled: boolean;
 }
 
-const KEY = 'turkeytuna.settings.v1';
+const KEY = 'stemjoris.settings.v1';
+/** Oude naam van de app; sleutels met dit voorvoegsel worden eenmalig overgezet. */
+const LEGACY_PREFIX = 'turkeytuna';
+const PREFIX = 'stemjoris';
+
+/**
+ * Eenmalige migratie van de oude sleutels (`turkeytuna.*` → `stemjoris.*`), zodat bestaande
+ * instellingen behouden blijven. Een bestaande nieuwe sleutel wint; de oude wordt daarna gewist.
+ */
+export function migrateLegacyStorage(): void {
+  try {
+    const storage = window.localStorage;
+    const legacy: string[] = [];
+    for (let i = 0; i < storage.length; i++) {
+      const k = storage.key(i);
+      if (k && k.startsWith(LEGACY_PREFIX)) legacy.push(k);
+    }
+    for (const oldKey of legacy) {
+      const newKey = PREFIX + oldKey.slice(LEGACY_PREFIX.length);
+      const value = storage.getItem(oldKey);
+      if (value !== null && storage.getItem(newKey) === null) storage.setItem(newKey, value);
+      storage.removeItem(oldKey);
+    }
+  } catch {
+    // Geen opslag of geen schrijfrechten: niets te migreren.
+  }
+}
 
 export function isTunerMode(value: unknown): value is TunerMode {
   return typeof value === 'string' && (TUNER_MODES as readonly string[]).includes(value);

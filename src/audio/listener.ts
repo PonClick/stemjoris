@@ -3,6 +3,7 @@
 
 import type { PitchReading } from '../types';
 import { getAudioContext, resumeAudio } from './context';
+import { PitchGate } from './gate';
 import { detectPitch, minBlockSize } from './pitch';
 
 export interface ListenerOptions {
@@ -10,10 +11,14 @@ export interface ListenerOptions {
   minFreq?: number;
   /** Hoogste te zoeken frequentie in Hz (standaard 1500). */
   maxFreq?: number;
-  /** Blokken met een lagere RMS gelden als stilte (standaard 0.005, ongeveer -46 dBFS). */
+  /** RMS voor een nieuwe toon (standaard 0.005, ongeveer -46 dBFS). */
   minRms?: number;
-  /** Metingen met een lagere betrouwbaarheid worden null (standaard 0.8). */
+  /** Betrouwbaarheid voor een nieuwe toon (standaard 0.8). */
   minClarity?: number;
+  /** Betrouwbaarheid terwijl een toon uitklinkt (standaard 0.5). Zie gate.ts. */
+  sustainClarity?: number;
+  /** RMS terwijl een toon uitklinkt (standaard 0.0012, ongeveer -58 dBFS). */
+  sustainRms?: number;
 }
 
 const MIN_FFT_SIZE = 4096;
@@ -71,8 +76,7 @@ const unschedule: (id: number) => void =
 export class PitchListener {
   private minFreq: number;
   private maxFreq: number;
-  private readonly minRms: number;
-  private readonly minClarity: number;
+  private readonly gate: PitchGate;
 
   private onReading: ((r: PitchReading | null) => void) | null = null;
   private stream: MediaStream | null = null;
@@ -88,8 +92,12 @@ export class PitchListener {
   constructor(opts: ListenerOptions = {}) {
     this.minFreq = opts.minFreq ?? 27;
     this.maxFreq = opts.maxFreq ?? 1500;
-    this.minRms = opts.minRms ?? 0.005;
-    this.minClarity = opts.minClarity ?? 0.8;
+    this.gate = new PitchGate({
+      minRms: opts.minRms,
+      minClarity: opts.minClarity,
+      sustainClarity: opts.sustainClarity,
+      sustainRms: opts.sustainRms,
+    });
   }
 
   get running(): boolean {
@@ -159,6 +167,7 @@ export class PitchListener {
     for (const track of stream.getAudioTracks()) {
       track.addEventListener('ended', this.handleTrackEnded);
     }
+    this.gate.reset();
     this.active = true;
     this.frameId = schedule(this.tick);
   }
@@ -234,13 +243,13 @@ export class PitchListener {
     const time = performance.now();
 
     let reading: PitchReading | null = null;
-    if (rms >= this.minRms) {
+    if (rms >= this.gate.loosestRms) {
       const result = detectPitch(buf, analyser.context.sampleRate, {
         minFreq: this.minFreq,
         maxFreq: this.maxFreq,
-        threshold: 1 - this.minClarity,
+        threshold: 1 - this.gate.loosestClarity,
       });
-      if (result && result.clarity >= this.minClarity) {
+      if (result && this.gate.accept(result.freq, result.clarity, rms, time)) {
         reading = { freq: result.freq, clarity: result.clarity, rms, time };
       }
     }

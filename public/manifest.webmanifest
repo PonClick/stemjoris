@@ -1,7 +1,7 @@
 {
-  "name": "TurkeyTuna",
-  "short_name": "TurkeyTuna",
-  "description": "Stem je gitaar, bas, ukelele, viool en andere snaarinstrumenten. Werkt offline; het microfoongeluid blijft op je apparaat.",
+  "name": "StemJoris – Guitar Tuner",
+  "short_name": "StemJoris",
+  "description": "Stemapparaat voor gitaar, contrabas, ukelele, viool en andere snaarinstrumenten / Tuner for guitar, double bass, ukulele, violin and other string instruments. Werkt offline; het microfoongeluid blijft op je apparaat.",
   "lang": "nl",
   "dir": "ltr",
   "id": "./",
@@ -9,8 +9,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#0a1a2b",
-  "background_color": "#0a1a2b",
+  "theme_color": "#0d0e10",
+  "background_color": "#0d0e10",
   "categories": ["music", "utilities"],
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

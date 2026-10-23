@@ -5,7 +5,8 @@
 //  - een meting die meer dan `maxJumpCents` van de huidige waarde afwijkt (octaafspike, andere snaar)
 //    wordt genegeerd, tenzij zulke metingen aanhouden en onderling overeenkomen: dan is het een
 //    nieuwe noot en springt de smoother er direct heen;
-//  - na stilte (null) blijft de laatste waarde nog `holdMs` staan, daarna komt null terug.
+//  - na stilte (null) blijft de laatste waarde nog `holdMs` staan, daarna komt null terug;
+//    `holding` zegt of de laatst teruggegeven waarde zo'n vastgehouden waarde was.
 
 export interface SmootherOptions {
   /** Aantal metingen in het mediaanvenster (standaard 5). */
@@ -46,6 +47,7 @@ export class PitchSmoother {
   private readonly scratch: number[] = [];
   private value: number | null = null;
   private lastTime = Number.NEGATIVE_INFINITY;
+  private held = false;
 
   constructor(opts: SmootherOptions = {}) {
     this.windowSize = Math.max(1, Math.round(opts.windowSize ?? 5));
@@ -53,13 +55,22 @@ export class PitchSmoother {
     this.holdMs = opts.holdMs ?? 400;
   }
 
+  /** true als de laatste push geen nieuwe meting had en de vorige waarde vasthield. */
+  get holding(): boolean {
+    return this.held;
+  }
+
   /** Verwerkt één meting (null = stilte) op tijdstip `time` in ms; geeft de gladde frequentie. */
   push(freq: number | null, time: number): number | null {
     if (freq === null || !(freq > 0) || !Number.isFinite(freq)) {
-      if (this.value !== null && time - this.lastTime <= this.holdMs) return fromCents(this.value);
+      if (this.value !== null && time - this.lastTime <= this.holdMs) {
+        this.held = true;
+        return fromCents(this.value);
+      }
       this.reset();
       return null;
     }
+    this.held = false;
 
     const cents = toCents(freq);
     this.lastTime = time;
@@ -101,5 +112,6 @@ export class PitchSmoother {
     this.candidates = [];
     this.value = null;
     this.lastTime = Number.NEGATIVE_INFINITY;
+    this.held = false;
   }
 }

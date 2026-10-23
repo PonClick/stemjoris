@@ -1,6 +1,7 @@
 // Snaarknoppen: nootnaam groot, octaaf klein. Toont de actieve snaar, het vastgezette doel,
-// welke snaren deze sessie al gestemd zijn en welke referentietoon klinkt.
+// welke snaren deze sessie al gestemd zijn en welke referentietoon klinkt. Labels volgen de taal.
 
+import { t } from '../i18n';
 import type { ScientificNote } from '../types';
 import { el, toggleClass } from './dom';
 import { prettyNoteName, spokenNote } from './format';
@@ -24,7 +25,7 @@ export class StringsPanel {
   private pressedIndex = -1;
 
   constructor(private readonly onTap: (index: number) => void) {
-    this.element = el('div', { class: 'strings', role: 'group', 'aria-label': 'Snaren' });
+    this.element = el('div', { class: 'strings', role: 'group', 'aria-label': t('stringsTitle') });
   }
 
   setStrings(infos: StringButtonInfo[]): void {
@@ -98,6 +99,17 @@ export class StringsPanel {
     });
   }
 
+  /** Na een taalwissel. */
+  relabel(): void {
+    this.element.setAttribute('aria-label', t('stringsTitle'));
+    this.updateLabels();
+  }
+
+  /** Aantal snaren in de huidige stemming. */
+  get count(): number {
+    return this.infos.length;
+  }
+
   private updateLabels(): void {
     this.buttons.forEach((_, i) => this.updateLabel(i));
   }
@@ -108,8 +120,8 @@ export class StringsPanel {
     if (!btn || !info) return;
     const n = this.infos.length - i;
     const spoken = spokenNote(info.name, info.octave);
-    const done = btn.classList.contains('is-tuned') ? ', gestemd' : '';
-    const label = this.action === 'tone' ? `Snaar ${n}, ${spoken}: toon afspelen${done}` : `Snaar ${n}, ${spoken}: stem op deze snaar${done}`;
+    const done = btn.classList.contains('is-tuned') ? t('stringDone') : '';
+    const label = t(this.action === 'tone' ? 'stringTone' : 'stringFix', { n, note: spoken, done });
     btn.setAttribute('aria-label', label);
     btn.setAttribute('aria-pressed', String(i === this.pressedIndex));
   }

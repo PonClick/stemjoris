@@ -1,7 +1,18 @@
-// Weergave van noten, cent en hertz in het Nederlands.
+// Weergave van noten, cent en hertz in de huidige taal (decimaalteken volgt de taal).
 
-const hz1 = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-const hz2 = new Intl.NumberFormat('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+import { getLang, NUMBER_LOCALE, t, type Lang } from '../i18n';
+
+const formatters = new Map<string, Intl.NumberFormat>();
+
+function numberFormat(lang: Lang, digits: 1 | 2): Intl.NumberFormat {
+  const key = `${lang}${digits}`;
+  let f = formatters.get(key);
+  if (!f) {
+    f = new Intl.NumberFormat(NUMBER_LOCALE[lang], { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    formatters.set(key, f);
+  }
+  return f;
+}
 
 /** 'F#' → 'F♯', 'Bb' → 'B♭'. */
 export function prettyNoteName(name: string): string {
@@ -9,9 +20,9 @@ export function prettyNoteName(name: string): string {
   return name[0] + name.slice(1).replace('#', '♯').replace('b', '♭');
 }
 
-/** Voor schermlezers: 'F#' → 'F kruis', 'Bb' → 'B mol'. */
+/** Voor schermlezers: 'F#' → 'F kruis' / 'F sharp', 'Bb' → 'B mol' / 'B flat'. */
 export function spokenNote(name: string, octave?: number | null): string {
-  const base = name.length < 2 ? name : name[0] + name.slice(1).replace('#', ' kruis').replace('b', ' mol');
+  const base = name.length < 2 ? name : name[0] + name.slice(1).replace('#', t('noteSharp')).replace('b', t('noteFlat'));
   return octave === undefined || octave === null ? base : `${base} ${octave}`;
 }
 
@@ -23,5 +34,5 @@ export function formatCents(cents: number): string {
 }
 
 export function formatHz(freq: number, digits: 1 | 2 = 1): string {
-  return (digits === 2 ? hz2 : hz1).format(freq);
+  return numberFormat(getLang(), digits).format(freq);
 }
