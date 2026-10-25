@@ -18,6 +18,8 @@ Gepubliceerd 23-10-2026: commit `bd9b246`, repo publiek, live op https://ponclic
 
 23-10-2026: op verzoek van Max zijn de echte foto's van Joris uit de hele git-geschiedenis gewist (`git filter-branch`, force-push `bea898f`), en de oude Actions-runs met artefacten zijn verwijderd. De live site geeft 404 op de foto's. Lokale backup van vóór het wissen: git-bundel in de sessie-scratchpad (privé).
 
+23-10-2026: Max testte met een echte gitaar op iPhone en Mac: werkt goed.
+
 ~~Wacht op Max: een echte sceptische foto (vervangt de mockup-uitsnede `joris-off.jpg`); eventueel stemjoris.nl kopen; akkoord om de oude tailnet-versie op te ruimen; test met een echte microfoon.
 
 ## Fase 1: TurkeyTuna

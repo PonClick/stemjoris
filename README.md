@@ -6,6 +6,21 @@
 
 **Use it:** https://ponclick.github.io/stemjoris/
 
+## Music is for everyone
+
+You shouldn't need money, an account or patience with ads to play in tune. A tuner is a basic tool, like a pick or a capo, and it should be free for everyone: the kid with a second-hand guitar, the busker, the band in a sweaty bar, the double bass player at a festival.
+
+So StemJoris will always be:
+
+- **Free**, with no paid version, no "pro" features and no ads
+- **Without an account**: open it and play
+- **Private**: no tracking, and your microphone never leaves your device
+- **Offline**: once opened, it works without internet, in a rehearsal room or a basement
+- **Light**: it runs on old and cheap phones in any modern browser
+- **Open**: the code is MIT-licensed, so anyone can learn from it, improve it or make their own version
+
+*Muziek is voor iedereen.* Je hoort geen geld, account of geduld met reclame nodig te hebben om zuiver te spelen. Een stemapparaat is basisgereedschap, net als een plectrum of een capo, en dat hoort gratis te zijn voor iedereen: het kind met een tweedehands gitaar, de straatmuzikant, de band in een zweterig café, de contrabassist op een festival. Daarom blijft StemJoris altijd gratis, zonder account, zonder reclame en zonder tracking. Hij werkt offline en op oude telefoons, en hij is open source.
+
 ## Features
 
 - Accurate pitch detection (YIN with octave-error correction), down to A0 (27.5 Hz) for 5-string bass and double bass
@@ -39,7 +54,7 @@ Microphone access requires `localhost` or HTTPS. Every push to `main` is tested,
 | `src/i18n/` | Dutch and English texts |
 | `src/ui/` | Interface, starting at `mountApp(root)` |
 
-Contributions are welcome: a missing instrument or tuning, a translation, or a bug report. Please keep the app free of trackers and external requests.
+Contributions are welcome: a missing instrument or tuning, a translation, or a bug report. Please keep the promise above: no trackers, no ads, no accounts and no external requests.
 
 ## Nederlands
 
